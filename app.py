@@ -14,11 +14,11 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 #getting data
-cases_by_age = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/cases_by_age_10-20-20.csv')
-cases_by_area = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/cases_by_area_10-20-20.csv')
-cases_by_gender = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/cases_by_gender_10-20-20.csv')
-ethnicity = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/ethnicity_10-20-20.csv')
-recovery_status = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/recovery_status_10-20-20.csv')
+cases_by_age = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/cases_by_age_11-7-20.csv')
+cases_by_area = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/cases_by_area_11-7-20.csv')
+cases_by_gender = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/cases_by_gender_11-7-20.csv')
+ethnicity = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/ethnicity_11-7-20.csv')
+recovery_status = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/recovery_status_11-7-20.csv')
 
 
 
@@ -204,9 +204,12 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 #dictionary of colors for app
 #original background color was #111111
-colors = {'background': 'black',
-          'text':'black'
-          #'text': 'white'
+colors = {'background': '#18191A',
+          'text':'#E4E6EB',
+          'text2':'#B0B3BB',
+          'paper_bgcolor':'#242526',
+          'plot_bgcolor':'#242526'
+          #'plot_bgcolor':'#22303C'
           }
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -221,43 +224,47 @@ app.layout = html.Div([
         dcc.RadioItems(id = 'radio-items',
                        options = [{'label': i, 'value': i} for i in available_inputs],
                        value = 'Active Cases',
-                       style = {'color': colors['text']}),
+                       style = {'color': colors['text2']}),
             
         dcc.Graph(id = 'cases-by-region') #figure for graph will be determined by app callback
             
                                        
-        ]),
+        ],
+        
+        style = {'backgroundColor':colors['background']}),
     
     
     html.Div([
         
-        html.H1('Taking a Deeper Dive Into Data for Individual Dates',
-                style = {'textAlign':'center','color':colors['text']})
+        html.H2('Demographic Data Over Time',
+                style = {'textAlign':'left','color':colors['text']})
         
-        ]),
+        ],
+        
+        style = {'backgroundColor':colors['background']}),
     
     html.Div([
         
         html.Div([
             
             html.H3('Select a Date:',
-                style = {'textAlign':'left','color':colors['text']}),
+                style = {'textAlign':'left','color':colors['text2']}),
         
             dcc.Dropdown(
                 id = 'date-dropdown',
                 options = [{'label': i, 'value': i} for i in available_dates],
                 value = available_dates[0],
-                style = {'color':colors['text']}
+                style = {'color':'black'}
                 ),
             
             html.H3('Select a Location:',
-                style = {'textAlign':'left','color':colors['text']}),
+                style = {'textAlign':'left','color':colors['text2']}),
                     
             dcc.Dropdown(
                 id = 'location-dropdown',
                 options = [{'label': i, 'value': i} for i in available_locations],
                 value = 'Community',
-                style = {'color':colors['text']}
+                style = {'color':'black'}
                 ),
         
             dcc.Graph(id = 'cases-by-gender') #figure for graph will be determined by app callback
@@ -267,7 +274,7 @@ app.layout = html.Div([
             style={'display':'inline-block',
                    'width':'35%',
                    'vertical-align':'top',
-                   #'backgroundColor':colors['background']
+                   'backgroundColor':colors['background']
                    }),
         
         html.Div([
@@ -279,13 +286,18 @@ app.layout = html.Div([
             ],
             
             style={'display':'inline-block',
-                   'width':'60%'})
+                   'width':'60%',
+                   'backgroundColor':colors['background']})
         
         
         ])
     
         
-    ])
+    ],
+    
+    style = {'backgroundColor':colors['background']}
+    
+    )
 
 
 
@@ -304,9 +316,11 @@ def create_line_plot(column_name):
   fig = px.line(area_viz,
               x = 'Date',
               y = column_name,
+              #opacity = 0.7,
               title = column_name + ' by Region',
               template = 'plotly_dark',
-              color = 'Area')
+              color = 'Area',
+              color_discrete_sequence = px.colors.qualitative.Plotly)
   
   fig.update_layout(
       hovermode = 'closest',
@@ -319,7 +333,9 @@ def create_line_plot(column_name):
           y=1.02,
           xanchor='left',
           x=0
-          )
+          ),
+      paper_bgcolor = colors['paper_bgcolor'],
+      plot_bgcolor = colors['plot_bgcolor']
   )
                   
   return fig
@@ -336,7 +352,9 @@ def create_age_barplot(date, column_name):
   fig = px.bar(age_viz[age_viz['Date'] == date],
                x = 'Age',
                y = column_name,
+               range_y = [0,3750],   #enhancement would be to calculate this based on max from dataframe
                color = 'Age',
+               opacity = 0.65,
                color_discrete_sequence = px.colors.qualitative.D3,
                template = 'plotly_dark',
                title = column_name + ' Cases by Age as of ' + date)
@@ -348,7 +366,11 @@ def create_age_barplot(date, column_name):
       title_font_size = 24,
       yaxis = dict(title = None),
       xaxis = dict(title = 'Age Group'),
-      showlegend = False)
+      showlegend = False,
+      paper_bgcolor = colors['paper_bgcolor'],
+      plot_bgcolor = colors['plot_bgcolor']
+  )
+  
 
   return fig
 
@@ -364,9 +386,11 @@ def create_pie_chart(date, column_name):
                values = column_dict[column_name],
                names = 'Gender',
                color = 'Gender',
+               opacity = 0.65,
                template = 'plotly_dark',
                title = column_dict[column_name] + ' by<br>Gender as of ' + date,
-               color_discrete_sequence = px.colors.qualitative.D3)
+               color_discrete_sequence = px.colors.qualitative.D3[7:])
+               #color_discrete_sequence = ['7F7F7F','BCBD22','17BECF'])
   
   fig.update_layout(font_family = 'Courier',
                     font_color = 'white',
@@ -377,7 +401,9 @@ def create_pie_chart(date, column_name):
                         y = -0.2,
                         xanchor = 'left',
                         x = -0.2
-                    ))
+                    ),
+                    paper_bgcolor = colors['paper_bgcolor'],
+                    plot_bgcolor = colors['plot_bgcolor'])
 
   return fig
 
@@ -392,11 +418,14 @@ def create_ethnicity_barplot(date, column_name):
   fig = px.bar(ethnicity_viz[ethnicity_viz['Date'] == date],
                x = column_name,
                y = 'Ethnicity',
+               opacity = 0.65,
+               range_x = [0,6000], #enhancement would be to calculate this based on max from dataframe
                color = 'Ethnicity',
                orientation = 'h',
                template = 'plotly_dark',
                title = column_name + ' Cases by Ethnicity as of ' + date,
                color_discrete_sequence = px.colors.qualitative.D3)
+               
   
   fig.update_layout(
       hovermode = 'closest',
@@ -405,7 +434,9 @@ def create_ethnicity_barplot(date, column_name):
       title_font_size = 24,
       xaxis = dict(title=None),
       yaxis = dict(title=None),
-      showlegend = False)
+      showlegend = False,
+      paper_bgcolor = colors['paper_bgcolor'],
+      plot_bgcolor = colors['plot_bgcolor'])
 
   return fig
 
