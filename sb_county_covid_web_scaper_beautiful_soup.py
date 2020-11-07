@@ -76,34 +76,34 @@ def create_df(x):
 #creating dataframe for cases by area tables, currently cases_by_area is the only csv file being used for the web app        
 cases_by_area = create_df(0)
 cases_by_area.replace({'—':np.nan}, inplace = True)
-cases_by_area.to_csv('cases_by_area_10-20-20.csv', index = False)
+cases_by_area.to_csv('cases_by_area_11-7-20.csv', index = False)
 
 #creating dataframe for recovery status tables
 recovery_status = create_df(1)
 recovery_status.replace({'—':np.nan}, inplace = True)
-recovery_status.to_csv('recovery_status_10-20-20.csv', index = False)
+recovery_status.to_csv('recovery_status_11-7-20.csv', index = False)
 
 #creating dataframe for cases by age tables
 cases_by_age = create_df(3)
 cases_by_age.replace({'—':np.nan}, inplace = True)
-cases_by_age.to_csv('cases_by_age_10-20-20.csv', index = False)
+cases_by_age.to_csv('cases_by_age_11-7-20.csv', index = False)
 
 #creating dataframe for cases by gender tables
 cases_by_gender = create_df(4)
 cases_by_gender.replace({'—':np.nan}, inplace = True)
-cases_by_gender.to_csv('cases_by_gender_10-20-20.csv', index = False)
+cases_by_gender.to_csv('cases_by_gender_11-7-20.csv', index = False)
 
 #creating dataframe for testing status tables
 testing_status = create_df(6)
 testing_status.replace({'—':np.nan}, inplace = True)
-testing_status.to_csv('testing_status_10-20-20.csv', index = False)
+testing_status.to_csv('testing_status_11-7-20.csv', index = False)
 
 #creating dataframe for transmission method tables
 transmission_method = create_df(7)
 transmission_method.replace({'—':np.nan}, inplace = True)
-transmission_method.to_csv('transmission_method_10-20-20.csv', index = False)
+transmission_method.to_csv('transmission_method_11-7-20.csv', index = False)
 
 #creating dataframe for cases by race/ethnicity tables
 ethnicity = create_df(9)
 ethnicity.replace({'—':np.nan}, inplace = True)
-ethnicity.to_csv('ethnicity_10-20-20.csv', index = False)
+ethnicity.to_csv('ethnicity_11-7-20.csv', index = False)
