@@ -14,11 +14,11 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 #getting data
-cases_by_age = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/cases_by_age_11-7-20.csv')
-cases_by_area = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/cases_by_area_11-7-20.csv')
-cases_by_gender = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/cases_by_gender_11-7-20.csv')
-ethnicity = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/ethnicity_11-7-20.csv')
-recovery_status = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/recovery_status_11-7-20.csv')
+cases_by_age = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/cases_by_age.csv')
+cases_by_area = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/cases_by_area.csv')
+cases_by_gender = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/cases_by_gender.csv')
+ethnicity = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/ethnicity.csv')
+recovery_status = pd.read_csv('https://raw.githubusercontent.com/bryandaetz1/SB_County_COVID-19_Data/master/CSV_Files/recovery_status.csv')
 
 
 
@@ -200,7 +200,8 @@ recovery['Community'] = pd.to_numeric(recovery['Community'])
 
 # LAYOUT FOR APP
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+#external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+external_stylesheets = ['https://codepen.io/chriddyp/pen/dZVMbK.css']  
 
 #dictionary of colors for app
 #original background color was #111111
@@ -266,6 +267,12 @@ app.layout = html.Div([
                 value = 'Community',
                 style = {'color':'black'}
                 ),
+                        
+            html.H3(id = 'active_cases',
+                    style = {'textAlign':'left','color':colors['text2']}),
+            
+            html.H3(id = 'recovered_cases',
+                    style = {'textAlign':'left','color':colors['text2']}),
         
             dcc.Graph(id = 'cases-by-gender') #figure for graph will be determined by app callback
             
@@ -274,8 +281,8 @@ app.layout = html.Div([
             style={'display':'inline-block',
                    'width':'35%',
                    'vertical-align':'top',
-                   'backgroundColor':colors['background']
-                   }),
+                   'backgroundColor':colors['background']}
+            ),
         
         html.Div([
             
@@ -295,7 +302,11 @@ app.layout = html.Div([
         
     ],
     
-    style = {'backgroundColor':colors['background']}
+    style = {
+        'backgroundColor':colors['background'],
+        'display':'flex',
+        'flex-direction':'column'
+        }
     
     )
 
@@ -441,16 +452,29 @@ def create_ethnicity_barplot(date, column_name):
   return fig
 
 
+@app.callback(
+    Output(component_id='active_cases', component_property='children'),
+    [Input(component_id='date-dropdown', component_property='value'),
+     Input(component_id='location-dropdown', component_property='value')])
 
 #function to return active cases for a given column and date
 def active_cases(date, column_name):
   count = int(recovery.loc[(recovery['Recovery Status'] == 'Active Cases') & (recovery['Date'] == date), column_name].values)
-  return count
+  text = 'Active Cases: %d' %count
+  return text
+
+
+
+@app.callback(
+    Output(component_id='recovered_cases', component_property='children'),
+    [Input(component_id='date-dropdown', component_property='value'),
+     Input(component_id='location-dropdown', component_property='value')])
 
 #function to return recovered cases for a given column and date
 def recovered_cases(date, column_name):
   count = int(recovery.loc[(recovery['Recovery Status'] == 'Recovered Cases') & (recovery['Date'] == date), column_name].values)
-  return count
+  text = 'Recovered Cases %d' %count
+  return text
 
     
 
