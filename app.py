@@ -200,7 +200,6 @@ recovery['Community'] = pd.to_numeric(recovery['Community'])
 
 # LAYOUT FOR APP
 
-#external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 external_stylesheets = ['https://codepen.io/chriddyp/pen/dZVMbK.css']  
 
 #dictionary of colors for app
@@ -221,24 +220,30 @@ app.layout = html.Div([
         
         html.H1('Santa Barbara County COVID-19 Dashboard',
                 style = {'textAlign':'center','color':colors['text']}),
-            
-        dcc.RadioItems(id = 'radio-items',
-                       options = [{'label': i, 'value': i} for i in available_inputs],
-                       value = 'Active Cases',
-                       style = {'color': colors['text2']}),
-            
-        dcc.Graph(id = 'cases-by-region') #figure for graph will be determined by app callback
-            
-                                       
+                                                           
         ],
         
         style = {'backgroundColor':colors['background']}),
+    
+    html.Div(
+                   
+        children = [
+                    dcc.RadioItems(id = 'radio-items',
+                       options = [{'label': i, 'value': i} for i in available_inputs],
+                       value = 'Active Cases',
+                       labelStyle={'display': 'inline-block'},
+                       style = {'color': colors['text2']}),
+        
+                    dcc.Graph(id = 'cases-by-region') #figure for graph will be determined by app callback
+                    
+        
+        ]),
     
     
     html.Div([
         
         html.H2('Demographic Data Over Time',
-                style = {'textAlign':'left','color':colors['text']})
+                style = {'textAlign':'center','color':colors['text']})
         
         ],
         
@@ -246,55 +251,113 @@ app.layout = html.Div([
     
     html.Div([
         
-        html.Div([
+        html.Div(
             
-            html.H3('Select a Date:',
-                style = {'textAlign':'left','color':colors['text2']}),
-        
-            dcc.Dropdown(
-                id = 'date-dropdown',
-                options = [{'label': i, 'value': i} for i in available_dates],
-                value = available_dates[0],
-                style = {'color':'black'}
-                ),
-            
-            html.H3('Select a Location:',
-                style = {'textAlign':'left','color':colors['text2']}),
+            className = 'row',
+            children = [
+                
+                html.Div(
                     
-            dcc.Dropdown(
-                id = 'location-dropdown',
-                options = [{'label': i, 'value': i} for i in available_locations],
-                value = 'Community',
-                style = {'color':'black'}
-                ),
+                    className = 'two columns',
+                    
+                    children = [
+            
+                        html.H3('Select a Date:',
+                            style = {'textAlign':'left','color':colors['text2']}),
                         
-            html.H3(id = 'active_cases',
-                    style = {'textAlign':'left','color':colors['text2']}),
+                        html.H3('Select a Location:',
+                            style = {'textAlign':'left','color':colors['text2']})
+                        
+                        ]
+                    ),
             
-            html.H3(id = 'recovered_cases',
-                    style = {'textAlign':'left','color':colors['text2']}),
-        
-            dcc.Graph(id = 'cases-by-gender') #figure for graph will be determined by app callback
             
-            ],
+                html.Div(
+                    
+                    className = 'three columns',
+                    
+                    children = [
+                            dcc.Dropdown(
+                                id = 'date-dropdown',
+                                options = [{'label': i, 'value': i} for i in available_dates],
+                                value = available_dates[0],
+                                style = {'color':'black',
+                                         'margin-top':'15px',
+                                         'margin-bottom':'15px'}
+                                ),
+                            
+                        
+                            dcc.Dropdown(
+                                id = 'location-dropdown',
+                                options = [{'label': i, 'value': i} for i in available_locations],
+                                value = 'Community',
+                                style = {'color':'black',
+                                         'margin-top':'15px',
+                                         'margin-bottom':'15px'}
+                                )
+                            ]),
             
-            style={'display':'inline-block',
-                   'width':'35%',
-                   'vertical-align':'top',
-                   'backgroundColor':colors['background']}
+                html.Div(
+                    
+                    className = 'seven columns',
+                    
+                    children = [
+                                
+                            html.H3(id = 'active_cases',
+                                    style = {'textAlign':'center','color':colors['text2']}),
+                            
+                            html.H3(id = 'recovered_cases',
+                                    style = {'textAlign':'center','color':colors['text2']}),
+                
+                   
+                ])
+                ]
             ),
+            
         
-        html.Div([
+        
+        html.Div(
             
-            dcc.Graph(id = 'cases-by-ethnicity'), #figure for graph will be determined by app callback
+            className = 'row',
             
-            dcc.Graph(id = 'cases-by-age') #figure for graph will be determined by app callback
+            children = [
+                
+                html.Div(
+                    className = 'four columns',
+                    
+                    children = [
+            
+                        dcc.Graph(id = 'cases-by-gender'), #figure for graph will be determined by app callback
+                        
+                        ],
+                    style = {'padding-left':'10px',
+                             'padding-right':'10px'}),
+                
+                html.Div(
+                    className = 'four columns',
+                    
+                    children = [
+                
+                        dcc.Graph(id = 'cases-by-ethnicity'), #figure for graph will be determined by app callback
+                        
+                        ],
+                    style = {'padding-left':'10px',
+                             'padding-right':'10px'}),
+                
+                html.Div(
+                    className = 'four columns',
+                    
+                    children = [
+                
+                        dcc.Graph(id = 'cases-by-age') #figure for graph will be determined by app callback
+                        
+                        ],
+                    style = {'padding-left':'10px',
+                             'padding-right':'10px'})
             
             ],
             
-            style={'display':'inline-block',
-                   'width':'60%',
-                   'backgroundColor':colors['background']})
+            style={'backgroundColor':colors['background']})
         
         
         ])
@@ -305,7 +368,9 @@ app.layout = html.Div([
     style = {
         'backgroundColor':colors['background'],
         'display':'flex',
-        'flex-direction':'column'
+        'flex-direction':'column',
+        'padding-left':'10px',
+        'padding-right':'10px'
         }
     
     )
@@ -368,7 +433,7 @@ def create_age_barplot(date, column_name):
                opacity = 0.65,
                color_discrete_sequence = px.colors.qualitative.D3,
                template = 'plotly_dark',
-               title = column_name + ' Cases by Age as of ' + date)
+               title = column_name + ' Cases by Age<br>as of ' + date)
   
   fig.update_layout(
       hovermode = 'closest',
@@ -434,7 +499,7 @@ def create_ethnicity_barplot(date, column_name):
                color = 'Ethnicity',
                orientation = 'h',
                template = 'plotly_dark',
-               title = column_name + ' Cases by Ethnicity as of ' + date,
+               title = column_name + ' Cases by Ethnicity<br>as of ' + date,
                color_discrete_sequence = px.colors.qualitative.D3)
                
   
