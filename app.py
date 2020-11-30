@@ -209,7 +209,6 @@ colors = {'background': '#18191A',
           'text2':'#B0B3BB',
           'paper_bgcolor':'#242526',
           'plot_bgcolor':'#242526'
-          #'plot_bgcolor':'#22303C'
           }
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -219,7 +218,11 @@ app.layout = html.Div([
     html.Div([
         
         html.H1('Santa Barbara County COVID-19 Dashboard',
-                style = {'textAlign':'center','color':colors['text']}),
+                style = {'textAlign':'center',
+                         'color':colors['text'],
+                         'font-family':'Courier',
+                         'margin-top':'10px',
+                         'margin-bottom':'30px'}),
                                                            
         ],
         
@@ -243,7 +246,11 @@ app.layout = html.Div([
     html.Div([
         
         html.H2('Demographic Data Over Time',
-                style = {'textAlign':'center','color':colors['text']})
+                style = {'textAlign':'center',
+                         'color':colors['text'],
+                         'font-family':'Courier',
+                         'margin-top':'30px',
+                         'margin-bottom':'25px'})
         
         ],
         
@@ -258,15 +265,21 @@ app.layout = html.Div([
                 
                 html.Div(
                     
-                    className = 'two columns',
+                    className = 'three columns',
                     
                     children = [
             
                         html.H3('Select a Date:',
-                            style = {'textAlign':'left','color':colors['text2']}),
+                            style = {'textAlign':'left',
+                                     'color':colors['text2'],
+                                     'font-family':'Courier',
+                                     'margin-left':'20px'}),
                         
                         html.H3('Select a Location:',
-                            style = {'textAlign':'left','color':colors['text2']})
+                            style = {'textAlign':'left',
+                                     'color':colors['text2'],
+                                     'font-family':'Courier',
+                                     'margin-left':'20px'})
                         
                         ]
                     ),
@@ -299,15 +312,19 @@ app.layout = html.Div([
             
                 html.Div(
                     
-                    className = 'seven columns',
+                    className = 'six columns',
                     
                     children = [
                                 
                             html.H3(id = 'active_cases',
-                                    style = {'textAlign':'center','color':colors['text2']}),
+                                    style = {'textAlign':'center',
+                                             'color':colors['text2'],
+                                             'font-family':'Courier'}),
                             
                             html.H3(id = 'recovered_cases',
-                                    style = {'textAlign':'center','color':colors['text2']}),
+                                    style = {'textAlign':'center',
+                                             'color':colors['text2'],
+                                             'font-family':'Courier'}),
                 
                    
                 ])
@@ -323,7 +340,7 @@ app.layout = html.Div([
             children = [
                 
                 html.Div(
-                    className = 'four columns',
+                    className = 'six columns',
                     
                     children = [
             
@@ -333,19 +350,9 @@ app.layout = html.Div([
                     style = {'padding-left':'10px',
                              'padding-right':'10px'}),
                 
-                html.Div(
-                    className = 'four columns',
-                    
-                    children = [
-                
-                        dcc.Graph(id = 'cases-by-ethnicity'), #figure for graph will be determined by app callback
-                        
-                        ],
-                    style = {'padding-left':'10px',
-                             'padding-right':'10px'}),
                 
                 html.Div(
-                    className = 'four columns',
+                    className = 'six columns',
                     
                     children = [
                 
@@ -357,7 +364,33 @@ app.layout = html.Div([
             
             ],
             
-            style={'backgroundColor':colors['background']})
+            style={'backgroundColor':colors['background']}),
+        
+        html.Div(
+            
+            className = 'row',
+            
+            children = [
+                
+                html.Div(
+                    className = 'two columns',
+                    children = [html.H1()],
+                    style={'backgroundColor':colors['background']}),
+                
+                html.Div(
+                    className = 'eight columns',
+                    
+                    children = [
+                
+                        dcc.Graph(id = 'cases-by-ethnicity'), #figure for graph will be determined by app callback
+                        
+                        ],
+                    style = {'padding-left':'10px',
+                             'padding-right':'10px',
+                             'padding-top':'15px'})
+                ],
+            
+                style={'backgroundColor':colors['background']})
         
         
         ])
@@ -425,15 +458,21 @@ def create_line_plot(column_name):
 
 #function to create age barplot
 def create_age_barplot(date, column_name):
-  fig = px.bar(age_viz[age_viz['Date'] == date],
+  age_plot = age_viz[age_viz['Date'] == date].reset_index(drop=True)
+  index = age_plot[age_plot[column_name] == age_plot[column_name].max()].index.values[0]  #getting index of max value
+  
+  bar_colors = ['#4b4c4f']*age_plot.shape[0]
+  bar_colors[index] = '#ed2009'    #making color of max value red
+  
+  fig = px.bar(age_plot,
                x = 'Age',
                y = column_name,
-               range_y = [0,3750],   #enhancement would be to calculate this based on max from dataframe
+               range_y = [0,4000],  #enhancement would be to calculate this based on max from dataframe
                color = 'Age',
+               color_discrete_sequence = bar_colors,
                opacity = 0.65,
-               color_discrete_sequence = px.colors.qualitative.D3,
                template = 'plotly_dark',
-               title = column_name + ' Cases by Age<br>as of ' + date)
+               title = 'Cases by Age Group')
   
   fig.update_layout(
       hovermode = 'closest',
@@ -441,7 +480,7 @@ def create_age_barplot(date, column_name):
       font_color = 'white',
       title_font_size = 24,
       yaxis = dict(title = None),
-      xaxis = dict(title = 'Age Group'),
+      xaxis = dict(title = None),
       showlegend = False,
       paper_bgcolor = colors['paper_bgcolor'],
       plot_bgcolor = colors['plot_bgcolor']
@@ -458,15 +497,23 @@ def create_age_barplot(date, column_name):
 
 #function to create pie chart for gender data
 def create_pie_chart(date, column_name):
-  fig = px.pie(gender_viz[gender_viz['Date'] == date],
+  gender_plot = gender_viz[gender_viz['Date'] == date].reset_index(drop=True)
+  index1 = gender_plot[gender_plot[column_name] == gender_plot[column_name].max()].index.values[0]
+  index2 = gender_plot[gender_plot[column_name] == gender_plot[column_name].min()].index.values[0]
+
+  pie_colors = ['#4b4c4f']*gender_plot.shape[0]
+  pie_colors[index1] = '#ed2009'
+  pie_colors[index2] = '#a8a2a2'
+    
+  fig = px.pie(gender_plot,
                values = column_dict[column_name],
                names = 'Gender',
                color = 'Gender',
                opacity = 0.65,
                template = 'plotly_dark',
-               title = column_dict[column_name] + ' by<br>Gender as of ' + date,
-               color_discrete_sequence = px.colors.qualitative.D3[7:])
-               #color_discrete_sequence = ['7F7F7F','BCBD22','17BECF'])
+               title = 'Percentage of Cases by Gender',
+               color_discrete_sequence = pie_colors)
+               
   
   fig.update_layout(font_family = 'Courier',
                     font_color = 'white',
@@ -491,16 +538,22 @@ def create_pie_chart(date, column_name):
 
 #function to create barplot for ethnicity data
 def create_ethnicity_barplot(date, column_name):
-  fig = px.bar(ethnicity_viz[ethnicity_viz['Date'] == date],
+  ethnicity_plot = ethnicity_viz[ethnicity_viz['Date'] == date].reset_index(drop=True)
+  index = ethnicity_plot[ethnicity_plot[column_name] == ethnicity_plot[column_name].max()].index.values[0]  
+  
+  bar_colors = ['#4b4c4f']*ethnicity_plot.shape[0]
+  bar_colors[index] = '#ed2009'
+    
+  fig = px.bar(ethnicity_plot,
                x = column_name,
                y = 'Ethnicity',
                opacity = 0.65,
-               range_x = [0,6000], #enhancement would be to calculate this based on max from dataframe
+               range_x = [0,6500], #enhancement would be to calculate this based on max from dataframe
                color = 'Ethnicity',
+               color_discrete_sequence = bar_colors,
                orientation = 'h',
                template = 'plotly_dark',
-               title = column_name + ' Cases by Ethnicity<br>as of ' + date,
-               color_discrete_sequence = px.colors.qualitative.D3)
+               title = 'Cases by Ethnicity')
                
   
   fig.update_layout(
