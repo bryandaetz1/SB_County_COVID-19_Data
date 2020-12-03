@@ -41,6 +41,9 @@ available_dates = age_viz.Date.unique()
 #creating list of available locations to select for dashboard
 available_locations = age_viz.columns[2:5].to_list()
 
+#getting max value in Total column to use as max for y-range in plot
+age_viz_max = age_viz['Total'].max()
+
 
 
 #CLEANING DATA FOR CASES BY AREA DATAFRAME
@@ -170,6 +173,9 @@ ethnicity_viz.rename({'RACE/ETHNICITY':'Ethnicity',
                       'Total(Community & Prison)':'Total'}, 
                      axis = 1, 
                      inplace = True)
+
+#getting max value in Total column to use as max for x-range in plot
+eth_viz_max = ethnicity_viz['Total'].max()
 
 
 
@@ -467,7 +473,7 @@ def create_age_barplot(date, column_name):
   fig = px.bar(age_plot,
                x = 'Age',
                y = column_name,
-               range_y = [0,4000],  #enhancement would be to calculate this based on max from dataframe
+               range_y = [0,age_viz_max],  #max for range calculated based on max from dataframe
                color = 'Age',
                color_discrete_sequence = bar_colors,
                opacity = 0.65,
@@ -548,7 +554,7 @@ def create_ethnicity_barplot(date, column_name):
                x = column_name,
                y = 'Ethnicity',
                opacity = 0.65,
-               range_x = [0,6500], #enhancement would be to calculate this based on max from dataframe
+               range_x = [0,eth_viz_max], #max for range calculated based on max from dataframe
                color = 'Ethnicity',
                color_discrete_sequence = bar_colors,
                orientation = 'h',
