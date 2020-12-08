@@ -7,7 +7,7 @@
 # Packages Used and Sources Referenced     
 **Python Version:** 3.7      
 **Packages:**         
-* **Web Scraping:** bs4, requests, pandas, numpy, os    
+* **Web Scraping:** bs4, requests, os    
 * **Data Cleaning:** pandas, numpy   
 * **Creating Visualizations & Building Web App:** plotly, dash   
 * **To Install Requirements to Run Web App:** `pip install -r requirements.txt`
