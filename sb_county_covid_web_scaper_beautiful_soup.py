@@ -75,6 +75,27 @@ def create_df(x):
             temp_df['Date'] = [date_list[i]] * len(temp_df)
             df = pd.concat([df, temp_df], axis = 0, sort = False)   
     return df   
+
+#after Dec. 9th, the SB county public health website added another table before ethnicity, which broke the orginal create_df function
+def create_ethnicity_df():
+    columns = master_list[0][10][0]
+    df = pd.DataFrame(master_list[0][10][1:], columns = columns)
+    df['Date'] = [date_list[0]] * len(df)
+    
+    switch = date_list.index('December 9, 2020')    #getting index where table format switches
+    for i in range(len(master_list)):
+        if i == 0:
+            continue
+        elif i <= switch:
+            temp_df = pd.DataFrame(master_list[i][10][1:], columns = columns)
+            temp_df['Date'] = [date_list[i]] * len(temp_df)
+            df = pd.concat([df, temp_df], axis = 0, sort = False)
+        else:
+            temp_df = pd.DataFrame(master_list[i][9][1:], columns = columns)
+            temp_df['Date'] = [date_list[i]] * len(temp_df)
+            df = pd.concat([df, temp_df], axis = 0, sort = False)
+        
+    return df   
             
 
 #creating dataframe for cases by area tables, currently cases_by_area is the only csv file being used for the web app        
@@ -108,6 +129,6 @@ transmission_method.replace({'—':np.nan}, inplace = True)
 transmission_method.to_csv('transmission_method.csv', index = False)
 
 #creating dataframe for cases by race/ethnicity tables
-ethnicity = create_df(9)
+ethnicity = create_ethnicity_df()
 ethnicity.replace({'—':np.nan}, inplace = True)
 ethnicity.to_csv('ethnicity.csv', index = False)
