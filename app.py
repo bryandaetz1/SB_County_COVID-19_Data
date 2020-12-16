@@ -174,6 +174,9 @@ ethnicity_viz.rename({'RACE/ETHNICITY':'Ethnicity',
                      axis = 1, 
                      inplace = True)
 
+#converting lompoc federal prison column to numeric (there were a few whitespaces that were causing it to be treated as an object)
+ethnicity_viz['Lompoc Federal Prison'] = pd.to_numeric(ethnicity_viz['Lompoc Federal Prison'].str.strip())
+
 #getting max value in Total column to use as max for x-range in plot
 eth_viz_max = ethnicity_viz['Total'].max()
 
