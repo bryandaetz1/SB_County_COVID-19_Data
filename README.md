@@ -2,7 +2,7 @@
 * Wrote a Python script to scrape COVID-19 data from the Santa Barbara County Public Health [website](https://publichealthsbc.org/status-reports/) using Beautiful Soup   
 * Set up a task to run this script daily to collect up to date data
 * Built an interactive web app using Dash to visualize trends in Santa Barbara County COVID-19 data
-* Deployed the app to an AWS EC2 instance so it can be accessed here: http://3.14.7.137:8050/  
+* Deployed the app to an AWS EC2 instance so it can be accessed here: http://sb-covid-dashboard.com/ 
 
 # Packages Used and Sources Referenced     
 **Python Version:** 3.7      
