@@ -1,4 +1,10 @@
 Testing Status,Total ,Date
+Cumulative Positive,16732,"December 29, 2020"
+Cumulative Negative,301207,"December 29, 2020"
+Cumulative Inconclusive,1342,"December 29, 2020"
+Cumulative Pending,315,"December 29, 2020"
+Cumulative Invalid,727,"December 29, 2020"
+Total,320323,"December 29, 2020"
 Cumulative Positive,16476,"December 28, 2020"
 Cumulative Negative,299192,"December 28, 2020"
 Cumulative Inconclusive,1332,"December 28, 2020"
