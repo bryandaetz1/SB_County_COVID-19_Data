@@ -1,4 +1,10 @@
 Testing Status,Total ,Date
+Cumulative Positive,21323,"January 10, 2021"
+Cumulative Negative,325530,"January 10, 2021"
+Cumulative Inconclusive,1530,"January 10, 2021"
+Cumulative Pending,365,"January 10, 2021"
+Cumulative Invalid,829,"January 10, 2021"
+Total,349577,"January 10, 2021"
 Cumulative Positive,20550,"January 9, 2021"
 Cumulative Negative,,"January 9, 2021"
 Cumulative Inconclusive,,"January 9, 2021"
