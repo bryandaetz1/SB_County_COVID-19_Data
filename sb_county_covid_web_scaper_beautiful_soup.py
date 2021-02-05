@@ -83,19 +83,23 @@ def create_ethnicity_df():
     df['Date'] = [date_list[0]] * len(df)
     
     switch = date_list.index('December 9, 2020') + 1   #getting index where table format switches, added +1 because the date Dec. 9th was duplicated on the website 
+    switch2 = date_list.index('January 26, 2021')       #variance in table structure for Jan. 26 (9 tables instead of 10)
     for i in range(len(master_list)):
         if i == 0:
             continue
-        elif i < switch:
+        elif i < switch and i != switch2:
             temp_df = pd.DataFrame(master_list[i][10][1:], columns = columns)
             temp_df['Date'] = [date_list[i]] * len(temp_df)
             df = pd.concat([df, temp_df], axis = 0, sort = False)
+    
         elif i == switch:
             continue   #the date Dec. 9th was entered twice, skipping the second instance
+        
         else:
             temp_df = pd.DataFrame(master_list[i][9][1:], columns = columns)
             temp_df['Date'] = [date_list[i]] * len(temp_df)
             df = pd.concat([df, temp_df], axis = 0, sort = False)
+            
         
     return df   
             
