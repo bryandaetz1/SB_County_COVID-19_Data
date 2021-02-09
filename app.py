@@ -101,6 +101,9 @@ area_viz.loc[(area_viz['Area'] == 'Lompoc') & (area_viz['Active Cases'] > 200), 
 #fixing outlier in Number of Deaths column for Santa Maria, looks like an extra 3 was added by mistake
 area_viz.loc[(area_viz['Area'] == 'Santa Maria') & (area_viz['Number of Deaths'] > 300), ['Number of Deaths']] = 34
 
+#fixing outlier in the New Cases column for Lompoc from Jan. 23
+area_viz.loc[(area_viz['Area'] == 'Lompoc') & (area_viz['Date'] == 'January 23, 2021'), ['New Cases']] = 52
+
 #getting list of inputs for radio items in dashboard
 available_inputs = area_viz.columns[:5].to_list()
 
