@@ -59,6 +59,7 @@ area_dict = {'SOUTH COUNTY UNINCORPORATED AREA includes communities of Montecito
              'FEDERAL PRISON IN LOMPOC':'Federal Prison in Lompoc',
              'CITY OF SANTA MARIA':'Santa Maria',
              'CITY OF SANTA MARIA4':'Santa Maria',
+             'CITY OF SANTA MARIA\xa0':'Santa Maria',
              'COMMUNITY OF ORCUTT':'Orcutt',
              'UNINCORPORATED AREAS of Sisquoc, Casmalia, Garey,\xa0 Cuyama, New Cuyama, and the City of Guadalupe':'Other Unincorporated Areas',
              'Total**':'Total',
