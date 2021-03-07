@@ -1,4 +1,10 @@
 Testing Status,Total ,Date
+Cumulative Positive,32301,"March 6, 2021"
+Cumulative Negative,461484,"March 6, 2021"
+Cumulative Inconclusive,2215,"March 6, 2021"
+Cumulative Pending,521,"March 6, 2021"
+Cumulative Invalid,1334,"March 6, 2021"
+Total,497855,"March 6, 2021"
 Cumulative Positive,32267,"March 5, 2021"
 Cumulative Negative,458811,"March 5, 2021"
 Cumulative Inconclusive,2212,"March 5, 2021"
